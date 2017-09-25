@@ -1,0 +1,8 @@
+[submodule "dehydrated"]
+	path = opt/dehydrated
+	url = https://github.com/lukas2511/dehydrated
+	branch = master
+[submodule "fastdns"]
+	path = opt/fastdns
+	url = https://github.com/tecywiz121/dehydrated-akamai-dns
+	branch = master

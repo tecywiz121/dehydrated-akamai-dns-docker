@@ -1,0 +1,28 @@
+#!/bin/bash
+
+mkdir -p /etc/dehydrated-fastdns
+
+{
+    echo "[akamai]"
+    echo "BASE_URL        = $AKAMAI_BASE_URL"
+    echo "CLIENT_TOKEN    = $AKAMAI_CLIENT_TOKEN"
+    echo "CLIENT_SECRET   = $AKAMAI_CLIENT_SECRET"
+    echo "ACCESS_TOKEN    = $AKAMAI_ACCESS_TOKEN"
+} > /etc/dehydrated-fastdns/credentials.cfg
+
+{
+    echo 'CHALLENGETYPE="dns-01"'
+    echo 'HOOK="/opt/hooks/combined"'
+    echo 'BASEDIR="/var/lib/dehydrated"'
+    echo 'CERTDIR="/certs"'
+
+    if [ -n "$DEHYDRATED_CA" ]; then
+        echo "CA='$DEHYDRATED_CA'"
+    fi
+
+    if [ -n "$DEHYDRATED_CA_TERMS" ]; then
+        echo "CA_TERMS='$DEHYDRATED_CA_TERMS'"
+    fi
+} > /etc/dehydrated
+
+exec /opt/dehydrated/dehydrated --config /etc/dehydrated "$@"

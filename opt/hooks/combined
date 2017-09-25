@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+
+/opt/fastdns/fastdns_hook "$@"
+
+relpath() {
+    python -c "from os.path import relpath; print relpath('$1', '$2')"
+}
+
+if [ "$1" = "deploy_cert" ]; then
+    DOMAIN="$2";
+    KEYFILE="$3";
+    FULLCHAINFILE="$5";
+
+    ln -s -f "$(relpath "$FULLCHAINFILE" "/certs/")" "/certs/$DOMAIN.crt";
+    ln -s -f "$(relpath "$KEYFILE" "/certs/")" "/certs/$DOMAIN.key";
+fi
