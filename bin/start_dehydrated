@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 mkdir -p /etc/dehydrated-fastdns
 
@@ -25,4 +26,17 @@ mkdir -p /etc/dehydrated-fastdns
     fi
 } > /etc/dehydrated
 
-exec /opt/dehydrated/dehydrated --config /etc/dehydrated "$@"
+mkdir -p /etc/periodic
+
+minute=$RANDOM
+let "minute %= 60"
+
+hour=$RANDOM
+let "hour %= 24"
+
+{
+    echo "$minute $hour * * * /opt/dehydrated/dehydrated --config /etc/dehydrated -c $DEHYDRATED_CRON_ARGS"
+} > /etc/periodic/dehydrated
+
+set +m  # Work around https://github.com/dubiousjim/dcron/issues/13
+exec /usr/sbin/crond -f

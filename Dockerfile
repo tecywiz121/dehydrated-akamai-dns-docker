@@ -16,6 +16,7 @@ RUN apk add \
         py2-six \
         py2-asn1 \
         py2-openssl \
+        dcron \
         dumb-init && \
     pip install --upgrade pip setuptools && \
     pip install -r /opt/fastdns/requirements.txt && \
@@ -23,4 +24,7 @@ RUN apk add \
 
 VOLUME ["/certs", "/var/lib/dehydrated"]
 
-ENTRYPOINT ["dumb-init", "/bin/start_dehydrated"]
+# -c to work around https://github.com/dubiousjim/dcron/issues/13
+ENTRYPOINT ["dumb-init", "-c", "--"]
+
+CMD ["/bin/start_dehydrated"]
