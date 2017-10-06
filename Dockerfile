@@ -25,6 +25,5 @@ RUN apk add \
 VOLUME ["/certs", "/var/lib/dehydrated"]
 
 # -c to work around https://github.com/dubiousjim/dcron/issues/13
-ENTRYPOINT ["dumb-init", "-c", "--"]
-
-CMD ["/bin/start_dehydrated"]
+ENTRYPOINT ["dumb-init", "-c", "--", "/bin/start_dehydrated"]
+CMD ["/usr/sbin/crond", "-f"]

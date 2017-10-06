@@ -39,4 +39,4 @@ let "hour %= 24"
 } > /etc/periodic/dehydrated
 
 set +m  # Work around https://github.com/dubiousjim/dcron/issues/13
-exec /usr/sbin/crond -f
+exec "$@"
